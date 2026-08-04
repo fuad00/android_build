@@ -964,6 +964,11 @@ def CopyInputDirectory(src, dst, filter_file):
         os.makedirs(full_dst, exist_ok=True)
       else:
         os.makedirs(os.path.dirname(full_dst), exist_ok=True)
+        if os.path.exists(full_dst):
+          # METROID: file_list.txt can list the same path twice (seen with
+          # aconfig flag.info); a duplicate hardlink of the same source is
+          # harmless, so skip instead of failing.
+          continue
         os.link(full_src, full_dst, follow_symlinks=False)
 
 
